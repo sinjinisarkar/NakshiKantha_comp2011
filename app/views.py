@@ -6,7 +6,6 @@ from itsdangerous import URLSafeTimedSerializer
 from datetime import datetime, timedelta
 
 
-
 @app.route('/')
 def index():
     sarees = Saree.query.all()
@@ -178,7 +177,7 @@ def checkout():
     else:
         guest_info = session.get('guest_info')
         if not guest_info:
-            flash("Please complete the guest checkout first.", "danger")
+            flash("Please either sign up/login or complete guest checkout.", "danger")
             return redirect(url_for('checkout_options'))
         cart_items = session.get('cart', [])
         user_id = None

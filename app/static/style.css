@@ -191,33 +191,33 @@ h1 {
 
 
 .list-group-item.active {
-    background-color: #d32f2f !important; /* Change to your desired background color */
-    color: #ffffff !important;           /* Change to your desired text color */
-    border-color: #d32f2f !important;    /* Optional: Change border color */
+    background-color: #d32f2f !important; 
+    color: #ffffff !important;           
+    border-color: #d32f2f !important;   
 }
 
 /* Breadcrumb Styling */
 .breadcrumb {
-    background-color: transparent; /* Ensures no background color */
-    margin: 0; /* Optional: Adjust margin */
-    padding: 0; /* Optional: Adjust padding */
-    border: none; /* Removes borders */
+    background-color: transparent; 
+    margin: 0; 
+    padding: 0; 
+    border: none; 
 }
 
 .breadcrumb-item a {
-    color: #d32f2f; /* High contrast red */
-    text-decoration: none; /* Removes underline */
-    font-weight: bold; /* Makes the text easier to read */
+    color: #d32f2f; 
+    text-decoration: none; 
+    font-weight: bold; 
 }
 
 .breadcrumb-item a:hover {
-    color: #b71c1c; /* Darker red on hover */
-    text-decoration: underline; /* Adds underline on hover for emphasis */
+    color: #b71c1c; 
+    text-decoration: underline; 
 }
 
 .breadcrumb-item.active {
-    color: #212121; /* Dark gray for active breadcrumb item */
-    font-weight: bold; /* Makes the active item bold */
+    color: #212121; 
+    font-weight: bold; 
 }
 
 /* Customize dropdown text size and spacing */
