@@ -1,15 +1,13 @@
-/* General Reset */
 body {
     margin: 0;
     font-family: Arial, sans-serif;
 }
 
 h1 {
-    font-family: 'YourFontName', sans-serif; /* Change 'YourFontName' to the desired font */
-    font-size: 24px; /* Adjust size as needed */
-    text-transform: capitalize; /* Automatically capitalize the first letter */
+    font-family: sans-serif;
+    font-size: 24px; 
+    text-transform: capitalize;
 }
-
 
 /* Logo */
 .logo {
@@ -29,17 +27,6 @@ h1 {
     color: #ff4444;
 }
 
-/* Search Bar */
-#search-bar {
-    width: 100%;
-    max-width: 300px; 
-    border-radius: 20px; 
-    border: 1px solid #bdb4b4;
-    padding: 5px 15px ;
-    margin-top: 30px;
-   
-}
-
 /* Navigation Links */
 .nav-links .nav-link {
     color: #333;
@@ -54,7 +41,7 @@ h1 {
     text-decoration: none;
 }
 
-/* Icon Styling */
+/* Navbar styling */
 .nav-right a {
     color: #333;
     font-size: 18px;
@@ -66,18 +53,17 @@ h1 {
     color: #ff4444;
 }
 
-/* Change the text color of active and inactive tabs */
+
 .nav-tabs .nav-link {
-    color: #d32f2f; /* High contrast red */
+    color: #d32f2f; 
 }
 
-/* Optional: Highlight the active tab with a darker red */
+
 .nav-tabs .nav-link.active {
-    color: white; /* Change the text color of the active tab */
-    background-color: #d32f2f; /* High contrast red */
-    border-color: #d32f2f; /* High contrast red */
+    color: white; 
+    background-color: #d32f2f; 
+    border-color: #d32f2f;
 }
-
 
 
 /* Carousel */
@@ -85,9 +71,9 @@ h1 {
     background: rgba(0, 0, 0, 0.5);
     padding: 20px;
     border-radius: 10px;
-    color: #fff; /* Ensure text is visible */
-    text-align: center; /* Center-align content */
-    z-index: 1; /* Ensure it appears above the image */
+    color: #fff; 
+    text-align: center; 
+    z-index: 1;
 }
 
 .carousel-item img {
@@ -97,31 +83,31 @@ h1 {
 
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
-    filter: invert(1); /* Makes navigation icons visible */
+    filter: invert(1); 
 }
 
 /* For mobile devices */
 @media (max-width: 768px) {
     .carousel-caption {
-        position: static; /* Prevent absolute positioning */
-        bottom: 10px; /* Adjust space for better fit */
+        position: static; 
+        bottom: 10px; 
         padding: 10px;
         font-size: 14px;
-        max-width: 100%; /* Ensure it doesn’t overflow */
+        max-width: 100%; 
     }
 
     .carousel-caption h5, .carousel-caption p {
-        font-size: 14px; /* Reduce font sizes for mobile */
+        font-size: 14px; 
     }
 
     .carousel-caption .btn {
         font-size: 14px;
-        padding: 10px 20px; /* Add padding for better spacing */
-        background-color: #dc3545; /* Ensure Bootstrap danger red */
+        padding: 10px 20px; 
+        background-color: #dc3545; 
         color: #fff;
         text-align: center;
-        z-index: 4; /* Ensure it's on top of everything */
-        display: inline-block; /* Ensure visibility */
+        z-index: 4; 
+        display: inline-block; 
     }
 
     .carousel-item img {
@@ -163,44 +149,42 @@ h1 {
 /* Adjust quantity table in view_cart page for smaller screens */
 @media (max-width: 768px) {
     .table th, .table td {
-        font-size: 14px; /* Reduce font size */
+        font-size: 14px; 
     }
 
     .img-thumbnail {
-        width: 60px; /* Further reduce image size on smaller screens */
+        width: 60px; 
     }
 
     #cart-total {
-        font-size: 16px; /* Adjust total font size */
+        font-size: 16px; 
     }
 }
 
-
 .scrolling-container {
     width: 100%;
-    overflow: hidden; /* Ensures the text doesn't overflow */
-    background-color: #d32f2f; /* Red background */
-    color: white; /* Text color */
-    padding: 3px 0; /* Reduce padding to make the red portion smaller */
+    overflow: hidden; 
+    color: white; 
+    padding: 3px 0;
     position: relative;
-    display: flex; /* Use Flexbox to center the text vertically */
-    justify-content: center; /* Center the text horizontally */
-    align-items: center; /* Center the text vertically */
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
   }
   
   .scrolling-text {
     display: inline-block;
-    white-space: nowrap; /* Prevents the text from wrapping */
+    white-space: nowrap;
     font-size: 20px;
     animation: scroll-left 20s linear infinite;
   }
-  
+
   @keyframes scroll-left {
     from {
-      transform: translateX(100%); /* Start off-screen on the right */
+      transform: translateX(100%); 
     }
     to {
-      transform: translateX(-100%); /* Move off-screen on the left */
+      transform: translateX(-100%); 
     }
   }
   
@@ -219,7 +203,7 @@ h1 {
 .card img {
     width: 100%;
     max-height: 300px;
-    object-fit: cover; /* to display proportionally*/
+    object-fit: cover; 
 }
 
 .card-title {
@@ -230,13 +214,12 @@ h1 {
 
 /* My Order */
 .product-image {
-    width: 250px; /* Set a fixed width */
-    height: 300px; /* Set a fixed height */
-    object-fit: cover; /* Ensures the image is cropped proportionally */
-    border-radius: 8px; /* Adds rounded corners */
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Optional shadow for a polished look */
+    width: 250px; 
+    height: 300px; 
+    object-fit: cover; 
+    border-radius: 8px; 
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); 
 }
-
 
 .list-group-item.active {
     background-color: #d32f2f !important; 
@@ -270,36 +253,36 @@ h1 {
 
 /* Customize dropdown text size and spacing */
 .dropdown-menu {
-    font-size: 14px; /* Adjust font size for all dropdown items */
-    line-height: 1.5; /* Improve readability with better line spacing */
-    padding: 10px; /* Add some padding for a cleaner look */
+    font-size: 14px; 
+    line-height: 1.5; 
+    padding: 10px; 
 }
 
 /* Style the 'Welcome' message */
 .dropdown-menu .dropdown-item-text {
-    font-size: 13px; /* Slightly smaller font size for the welcome text */
-    font-weight: bold; /* Make it bold for emphasis */
-    color: #555; /* Use a neutral color for the text */
-    margin-bottom: 8px; /* Add spacing below the welcome message */
+    font-size: 13px; 
+    font-weight: bold; 
+    color: #555;
+    margin-bottom: 8px; 
 }
 
 /* Profile and Logout links */
 .dropdown-menu .dropdown-item {
-    font-size: 14px; /* Slightly larger than the welcome text */
-    color: #333; /* Set a clean dark color for links */
-    padding: 8px 15px; /* Add padding for better clickability */
-    text-align: left; /* Align text to the left */
+    font-size: 14px; 
+    color: #333; 
+    padding: 8px 15px; 
+    text-align: left;
 }
 
 /* Highlight effect on hover for links */
 .dropdown-menu .dropdown-item:hover {
-    background-color: #f5f5f5; /* Subtle hover background */
-    color: #c7182f; /* Highlight with a brand color */
+    background-color: #f5f5f5; 
+    color: #c7182f; 
 }
 
-/*Out of stock button*/
+/* Out of stock button */
 .btn-secondary[disabled] {
-    background-color: #d9534f; /* Danger color */
+    background-color: #d9534f; 
     color: #fff;
     border: none;
     cursor: not-allowed;
@@ -314,4 +297,5 @@ footer {
     font-size: 14px;
     border-top: 1px solid #ccc;
 }
+
 

@@ -9,8 +9,8 @@ $(document).ready(function () {
     $(this).remove();
     });
 
-    // Initialize tooltips for icons
-    $('[data-toggle="tooltip"]').tooltip(); // Enable tooltips on hover
+    // Initialize tooltips for icons when hovered
+    $('[data-toggle="tooltip"]').tooltip(); 
 
     // Get the CSRF token from the meta tag
     var csrf_token = $('meta[name=csrf-token]').attr('content');
@@ -29,7 +29,7 @@ $(document).ready(function () {
         e.preventDefault();
     
         const quantityInput = $("#quantity");
-        const hiddenQuantityInput = $("#selected-quantity"); // Hidden field in the form
+        const hiddenQuantityInput = $("#selected-quantity"); 
         const max = parseInt(quantityInput.attr("max"));
         const min = parseInt(quantityInput.attr("min")) || 1;
         let quantity = parseInt(quantityInput.val()) || 1;
@@ -41,19 +41,19 @@ $(document).ready(function () {
         }
     
         quantityInput.val(quantity);
-        hiddenQuantityInput.val(quantity); // Update hidden input field
+        hiddenQuantityInput.val(quantity); 
     });
     
 
     // Handle click on increment button
     $("a.increment-btn").on("click", function () {
-        var item_id = $(this).attr('id'); // Get the item ID
+        var item_id = $(this).attr('id'); 
         updateQuantity(item_id, 'increment');
     });
 
     // Handle click on decrement button
     $("a.decrement-btn").on("click", function () {
-        var item_id = $(this).attr('id'); // Get the item ID
+        var item_id = $(this).attr('id'); 
         updateQuantity(item_id, 'decrement');
     });
 
@@ -62,23 +62,21 @@ $(document).ready(function () {
     // Function to send the AJAX request
     function updateQuantity(item_id, action) {
         $.ajax({
-            url: '/update-quantity', // Endpoint for updating quantity
+            url: '/update-quantity', 
             type: 'POST',
-            data: JSON.stringify({ item_id: item_id, action: action }), // Send item ID and action
+            data: JSON.stringify({ item_id: item_id, action: action }),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (response) {
                 if (response.status === 'OK') {
-                    // Format the numbers to two decimal places
                     const newSubtotal = response.new_subtotal.toFixed(1);
                     const newTotal = response.new_total.toFixed(1);
 
-                    // Update the quantity and total dynamically in the shopping cart page
                     $("#quantity-" + item_id).text(response.new_quantity);
                     $("#subtotal-" + item_id).text("£" + newSubtotal);
                     $("#cart-total").text("Total: £" + newTotal);
 
-                     // Update in cart modal if applicable
+                     // Update in cart modal 
                     $("#modal-quantity-" + item_id).text(response.new_quantity);
                     $("#modal-cart-total").text("Total: £" + newTotal);
                 } else {
@@ -113,10 +111,10 @@ window.addEventListener("load", function () {
             message: "This website uses cookies to ensure you get the best experience on our website.",
             dismiss: "Got it!",
             link: "Learn more",
-            href: "/privacy-policy", // Link to your privacy policy
+            href: "/privacy-policy", 
         },
         cookie: {
-            expiryDays: 365, // Number of days until the cookie expires
+            expiryDays: 365, 
         },
     });
 });
