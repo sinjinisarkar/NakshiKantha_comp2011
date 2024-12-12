@@ -283,8 +283,13 @@ h1 {
     color: #c7182f; /* Highlight with a brand color */
 }
 
-
-
+/*Out of stock button*/
+.btn-secondary[disabled] {
+    background-color: #d9534f; /* Danger color */
+    color: #fff;
+    border: none;
+    cursor: not-allowed;
+}
 
 /* Footer */
 footer {

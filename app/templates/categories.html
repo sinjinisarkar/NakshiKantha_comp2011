@@ -22,11 +22,17 @@
                     <!-- Buttons for Add to Cart, Wishlist, and View -->
                     <div class="d-flex justify-content-around">
                         <!-- Add to Cart -->
-                        <form data-toggle="tooltip" title = "Add to cart" action="{{ url_for('add_to_cart', saree_id=saree.id) }}" method="POST">
-                            <button type="submit" class="btn btn-outline-primary">
-                                <i class="fas fa-shopping-bag"></i>
+                        {% if saree.stock > 0 %}
+                            <form data-toggle="tooltip" title = "Add to cart" action="{{ url_for('add_to_cart', saree_id=saree.id) }}" method="POST">
+                                <button type="submit" class="btn btn-outline-primary">
+                                    <i class="fas fa-shopping-bag"></i>
+                                </button>
+                            </form>
+                        {% else %}
+                            <button class="btn btn-secondary" disabled>
+                                <i class="fa fa-ban"></i> Out of Stock
                             </button>
-                        </form>
+                        {% endif %}
                         <!-- Add to Wishlist -->
                         <form data-toggle="tooltip" title = "Add to wishlist" action="{{ url_for('add_to_wishlist', saree_id=saree.id) }}" method="POST">
                             <button type="submit" class="btn btn-outline-danger">
