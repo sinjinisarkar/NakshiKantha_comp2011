@@ -160,6 +160,20 @@ h1 {
     object-fit: cover;
 }
 
+/* Adjust quantity table in view_cart page for smaller screens */
+@media (max-width: 768px) {
+    .table th, .table td {
+        font-size: 14px; /* Reduce font size */
+    }
+
+    .img-thumbnail {
+        width: 60px; /* Further reduce image size on smaller screens */
+    }
+
+    #cart-total {
+        font-size: 16px; /* Adjust total font size */
+    }
+}
 
 
 .scrolling-container {
