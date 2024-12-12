@@ -80,20 +80,54 @@ h1 {
 
 
 
+/* Carousel */
 .carousel-caption {
-    background: rgba(0, 0, 0, 0.5); 
+    background: rgba(0, 0, 0, 0.5);
     padding: 20px;
     border-radius: 10px;
+    color: #fff; /* Ensure text is visible */
+    text-align: center; /* Center-align content */
+    z-index: 1; /* Ensure it appears above the image */
 }
 
 .carousel-item img {
-    height: 80vh; 
-    object-fit: cover; 
+    height: 80vh;
+    object-fit: cover;
 }
 
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
-    filter: invert(1); /* Makes navigation icons visible on dark backgrounds */
+    filter: invert(1); /* Makes navigation icons visible */
+}
+
+/* For mobile devices */
+@media (max-width: 768px) {
+    .carousel-caption {
+        position: static; /* Prevent absolute positioning */
+        bottom: 10px; /* Adjust space for better fit */
+        padding: 10px;
+        font-size: 14px;
+        max-width: 100%; /* Ensure it doesn’t overflow */
+    }
+
+    .carousel-caption h5, .carousel-caption p {
+        font-size: 14px; /* Reduce font sizes for mobile */
+    }
+
+    .carousel-caption .btn {
+        font-size: 14px;
+        padding: 10px 20px; /* Add padding for better spacing */
+        background-color: #dc3545; /* Ensure Bootstrap danger red */
+        color: #fff;
+        text-align: center;
+        z-index: 4; /* Ensure it's on top of everything */
+        display: inline-block; /* Ensure visibility */
+    }
+
+    .carousel-item img {
+        height: auto;
+        width: 100%;
+    }
 }
 
 

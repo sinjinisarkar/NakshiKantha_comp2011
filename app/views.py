@@ -236,9 +236,14 @@ def checkout():
         db.session.commit()
         print("Order and OrderItems committed successfully.")
         flash("Checkout complete!", "success")
-        return redirect(url_for('categories'))
+        return redirect(url_for('index'))
 
-    return render_template('address.html', user=session.get('user_id'), guest_info=session.get('guest_info'))
+    # Streamlined rendering for guest and logged-in users
+    if session.get('user_id'):
+        return render_template('address.html', cart_items=cart_items, user=g.current_user)
+    else:
+        return render_template('checkout_options.html', cart_items=cart_items, guest_info=guest_info)
+
 
 
 
