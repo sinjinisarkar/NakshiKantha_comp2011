@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-
 {% block content %}
 <div class="container py-5">
     <div class="text-center mb-4">
@@ -10,13 +9,12 @@
         
         <div class="col-md-4 mb-4">
             <div class="card">
-                <!-- Image with link to details -->
                 <a href="{{ url_for('saree_detail', saree_id=saree.id) }}">
                     <img src="{{ saree.image_url }}" class="card-img-top" alt="{{ saree.name }}">
                 </a>
                 <div class="card-body text-center">
                     <!-- Saree Name -->
-                    <h5 class="card-title">{{ saree.name }}</h5>
+                    <h2 class="card-title">{{ saree.name }}</h2>
                     <!-- Price Section -->
                     <p class="card-text">£{{ saree.price }}</p>
                     <!-- Buttons for Add to Cart, Wishlist, and View -->

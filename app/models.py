@@ -3,7 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from itsdangerous import URLSafeTimedSerializer
 from datetime import datetime
 
-
+# Saree table
 class Saree(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
@@ -17,7 +17,8 @@ class Saree(db.Model):
 
     def _repr_(self):
         return f"<Saree {self.name}>"
-    
+
+# Cart table
 class CartItem(db.Model):
     __tablename__ = 'cart_item'
 
@@ -29,7 +30,8 @@ class CartItem(db.Model):
     # Relationships
     user = db.relationship('User', backref=db.backref('cart_items', lazy=True))
     saree = db.relationship('Saree', backref=db.backref('cart_items', lazy=True))
-    
+
+# User table 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
@@ -44,14 +46,16 @@ class User(db.Model):
         """Verify the password against the stored hash."""
         return check_password_hash(self.password_hash, password)
     
+    # Custic, P. 2024. Yet another password reset tutorial in flask. 
+    # Freelance Footprints. [Online]. [Accessed 12 December 2024]. 
+    # Available from: https://freelancefootprints.substack.com/p/yet-another-password-reset-tutorial.
     def generate_reset_password_token(self, secret_key, expires_in=600):
         """Generate a token with a unique salt using the user's password hash."""
         serializer = URLSafeTimedSerializer(secret_key)
         return serializer.dumps(
             {'email': self.email},
-            salt=self.password_hash  # Use the password hash as the salt
+            salt=self.password_hash  
         )
-
     @staticmethod
     def validate_reset_password_token(token, secret_key, user_id):
         """Validate the token and return the user if valid."""
@@ -62,8 +66,8 @@ class User(db.Model):
         try:
             data = serializer.loads(
                 token,
-                salt=user.password_hash,  # Validate using the current password hash
-                max_age=600  # Token expiration in seconds
+                salt=user.password_hash,  
+                max_age=600  
             )
         except Exception as ex:
             print(f"Token validation failed: {ex}")
@@ -75,7 +79,8 @@ class User(db.Model):
         return f'<User {self.email}>'
 
 
-# many-to-many relationship between users and sarees in the wishlist
+# Many-to-many relationship between users and sarees in the wishlist
+# Wishlist table
 class WishlistItem(db.Model):
     __tablename__ = 'wishlist_item'
 
@@ -87,7 +92,7 @@ class WishlistItem(db.Model):
     user = db.relationship('User', backref=db.backref('wishlist_items', lazy=True))
     saree = db.relationship('Saree', backref=db.backref('wishlist_items', lazy=True))
 
-
+# Order table
 class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)  # Nullable for guest users
@@ -98,7 +103,7 @@ class Order(db.Model):
     # Relationships
     user = db.relationship('User', backref=db.backref('orders', lazy=True))
 
-
+# Order Ite table
 class OrderItem(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     order_id = db.Column(db.Integer, db.ForeignKey('order.id'), nullable=False)

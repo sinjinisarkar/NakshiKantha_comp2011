@@ -3,8 +3,9 @@
 {% block content %}
 <div class="container my-5">
     <div class="text-center mb-4">
-        <h2 class="font-weight-bold">Search Results for "{{ query }}"</h2>
+        <h1 class="font-weight-bold">Search Results for "{{ query }}"</h1>
     </div>
+    <!--Checks for user intput with saree's name and description-->
     {% if results %}
         <div class="row">
             {% for saree in results %}

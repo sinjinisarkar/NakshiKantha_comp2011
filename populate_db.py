@@ -1,10 +1,10 @@
 from app import app, db
 from app.models import Saree
 
-# Use Flask app context to interact with the database
 with app.app_context():
     # Clear the existing saree data
-    Saree.query.delete()  # This will delete all rows in the Saree table
+    # This will delete all rows in the Saree table
+    Saree.query.delete()  
     db.session.commit()
     print("All existing sarees cleared!")
     

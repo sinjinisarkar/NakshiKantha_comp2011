@@ -14,6 +14,9 @@ SECURITY_PASSWORD_SALT = 'your-secret-salt'
 # Flask-WTF settings
 WTF_CSRF_ENABLED = True
 
+# Custic, P. 2024. Yet another password reset tutorial in flask. 
+# Freelance Footprints. [Online]. [Accessed 12 December 2024]. 
+# Available from: https://freelancefootprints.substack.com/p/yet-another-password-reset-tutorial.
 # Email Configuration
 MAIL_SERVER = 'smtp.gmail.com'  # Use your email provider's SMTP server
 MAIL_PORT = 587  # Usually 587 for TLS

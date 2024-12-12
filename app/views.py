@@ -5,7 +5,7 @@ from flask_mail import Message
 from itsdangerous import URLSafeTimedSerializer
 from datetime import datetime, timedelta
 
-
+# Route for home page
 @app.route('/')
 def index():
     sarees = Saree.query.all()
@@ -13,10 +13,11 @@ def index():
     # Fetch sarees added in the last 30 days
     cutoff_date = datetime.utcnow() - timedelta(days=30)
     new_arrivals = Saree.query.filter(Saree.date_added >= cutoff_date).order_by(Saree.date_added.desc()).limit(4).all()
-    print(f"New Arrivals: {new_arrivals}")  # Debug output
+    print(f"New Arrivals: {new_arrivals}")
 
     return render_template('index.html', sarees=sarees, new_arrivals=new_arrivals)
 
+# Route for categories page
 @app.route('/categories', defaults={'category_name': None, 'product_type': None})
 @app.route('/categories/<string:product_type>/<string:category_name>')
 @app.route('/categories/<string:product_type>', defaults={'category_name': None})
@@ -36,7 +37,7 @@ def categories(product_type, category_name):
         category_name = category_name or "All"
 
     else:
-        # If no product_type, show all products (fallback behavior)
+        # If no product type show all products
         products = Saree.query.all()
         category_name = "All"
     
@@ -59,8 +60,7 @@ def categories(product_type, category_name):
         breadcrumbs=breadcrumbs
     )
 
-
-
+# Route for login page
 @app.route('/login', methods=['POST'])
 def login():
     email = request.form.get('email')
@@ -72,7 +72,6 @@ def login():
         session['user_id'] = user.id
         flash("Login successful!", "success")
 
-        # Retrieve user's existing cart from the database
         user_cart_items = CartItem.query.filter_by(user_id=user.id).all()
         user_cart = {item.saree_id: item.quantity for item in user_cart_items}
 
@@ -107,7 +106,7 @@ def login():
         flash("Invalid credentials!", "danger")
         return redirect(url_for('index'))
 
-
+# Route to load logged in user
 @app.before_request
 def load_logged_in_user():
     """Load the currently logged-in user."""
@@ -117,17 +116,16 @@ def load_logged_in_user():
     else:
         g.current_user = None
 
-
+# Route to logout
 @app.route('/logout')
 def logout():
     """Log out the user by clearing the session."""
-    session.pop('user_id', None)  # Remove user ID from the session
-    session.pop('cart', None)     # Clear the guest cart from the session
+    session.pop('user_id', None)  
+    session.pop('cart', None)     
     flash("You have successfully logged out.", "info")
     return redirect(url_for('index'))
 
-
-
+# Route to sign up
 @app.route('/signup', methods=['POST'])
 def signup():
     email = request.form.get('email')
@@ -144,6 +142,7 @@ def signup():
     flash("Signup successful! Please log in to your account.", "success")
     return redirect(url_for('index'))
 
+# Route for checkout_options page
 @app.route('/checkout-options', methods=['GET', 'POST'])
 def checkout_options():
     if request.method == 'POST':
@@ -160,13 +159,11 @@ def checkout_options():
         }
 
         flash("Guest details saved. Proceeding to checkout.", "success")
-        return redirect(url_for('checkout'))  # Redirect to the checkout route
+        return redirect(url_for('checkout'))  
 
-    return render_template('checkout_options.html')  # Render the options page
+    return render_template('checkout_options.html')  
 
-
-
-
+# Route for the checkout process
 @app.route('/checkout', methods=['GET', 'POST'])
 def checkout():
     print("Checkout route executed.")
@@ -201,6 +198,7 @@ def checkout():
 
         print(f"Total price for order: {total_price}")
 
+        # Creating a new order and merging it into the DB
         new_order = Order(
             user_id=user_id,
             guest_info=guest_info,
@@ -238,17 +236,17 @@ def checkout():
         flash("Checkout complete!", "success")
         return redirect(url_for('index'))
 
+    # Asked chatgpt to debug when the user wasnt logged in and was getting redirected to the address page
+    # OpenAI (2024) ChatGPT: Artificial Intelligence Language Model. [Accessed: 06 December 2024].
+    # Available from: https://openai.com/chatgpt 
+    # Route to load the cart
     # Streamlined rendering for guest and logged-in users
     if session.get('user_id'):
         return render_template('address.html', cart_items=cart_items, user=g.current_user)
     else:
         return render_template('checkout_options.html', cart_items=cart_items, guest_info=guest_info)
 
-
-
-
-
-
+# Route for guest checkout
 @app.route('/guest-checkout', methods=['GET', 'POST'])
 def guest_checkout():
     if request.method == 'POST':
@@ -268,21 +266,20 @@ def guest_checkout():
 
     return render_template('guest_checkout.html')
 
-
-
+# Route to intilalize cart
 @app.before_request
 def initialize_cart():
     """Ensure that the cart exists in the session."""
     if 'cart' not in session:
         session['cart'] = []
 
-
+# Route to add to cart
 @app.route('/add-to-cart/<int:saree_id>', methods=['POST'])
 def add_to_cart(saree_id):
     """Add a saree to the cart."""
-    saree = Saree.query.get_or_404(saree_id)  # Fetch the saree from the database
+    saree = Saree.query.get_or_404(saree_id) 
     user_id = session.get('user_id')
-    quantity = int(request.form.get('quantity', 1))  # Get quantity from form, default to 1
+    quantity = int(request.form.get('quantity', 1))  
 
     if user_id:
         # Logged-in user: use CartItem model
@@ -320,7 +317,7 @@ def add_to_cart(saree_id):
         session.modified = True  # Mark session as updated
 
     flash(f"{quantity} x {saree.name} added to cart!", "success")
-    return redirect(request.referrer or url_for('categories'))  # Redirect back to the previous page
+    return redirect(request.referrer or url_for('categories'))  
 
 @app.route('/remove-from-cart/<int:saree_id>')
 def remove_from_cart(saree_id):
@@ -342,13 +339,14 @@ def remove_from_cart(saree_id):
     flash("Item removed from cart.", "info")
     return redirect(url_for('view_cart'))
 
-
-
+# OpenAI (2024) ChatGPT: Artificial Intelligence Language Model. [Accessed: 06 December 2024].
+# Available from: https://openai.com/chatgpt 
+# Route to load the cart
 @app.before_request
 def load_cart():
     """Load the cart into the global context for use in the cart modal."""
     g.cart_total = 0
-    g.cart = []  # Default empty cart
+    g.cart = []  
 
     if 'user_id' in session:
         # Logged-in user: fetch cart from the database
@@ -372,10 +370,10 @@ def load_cart():
         g.cart_total = sum(item['price'] * item['quantity'] for item in g.cart)
 
 
-
+# Route to view cart
 @app.route('/view-cart')
 def view_cart():
-    if 'user_id' in session:  # Logged-in user
+    if 'user_id' in session:  
         user_id = session['user_id']
         db_cart_items = CartItem.query.filter_by(user_id=user_id).all()
 
@@ -384,7 +382,8 @@ def view_cart():
             saree = Saree.query.get(item.saree_id)
             if saree.stock < item.quantity:
                 flash(f"Stock for {saree.name} has changed. Available stock: {saree.stock}.", "warning")
-                item.quantity = min(item.quantity, saree.stock)  # Adjust cart quantity to available stock
+                 # Adjust cart quantity to available stock
+                item.quantity = min(item.quantity, saree.stock) 
                 db.session.commit()
 
             cart.append({
@@ -402,7 +401,8 @@ def view_cart():
             saree = Saree.query.get(item['id'])
             if saree.stock < item['quantity']:
                 flash(f"Stock for {saree.name} has changed. Available stock: {saree.stock}.", "warning")
-                item['quantity'] = min(item['quantity'], saree.stock)  # Adjust cart quantity to available stock
+                # Adjust cart quantity to available stock
+                item['quantity'] = min(item['quantity'], saree.stock)  
             item['subtotal'] = item['price'] * item['quantity']
         session['cart'] = cart
         session.modified = True
@@ -410,7 +410,7 @@ def view_cart():
 
     return render_template('view_cart.html', cart=cart, total_price=total_price)
 
-
+# Route to merge cart
 def merge_cart(user_id):
     """Merge the guest cart with the logged-in user's cart."""
     guest_cart = session.get('cart', [])
@@ -427,14 +427,16 @@ def merge_cart(user_id):
 
     # Save the merged cart
     session[user_cart_key] = user_cart
-    session.pop('cart', None)  # Clear the guest cart
+    session.pop('cart', None)  
     session.modified = True
 
+# Route to update quantity
 @app.route('/update-quantity', methods=['POST'])
 def update_quantity():
-    data = json.loads(request.data)  # Parse JSON from the request
-    item_id = int(data.get('item_id'))  # Get the item ID
-    action = data.get('action')  # Get the action (increment or decrement)
+    # Parse JSON from the request, then get the item id
+    data = json.loads(request.data)  
+    item_id = int(data.get('item_id'))  
+    action = data.get('action')  
 
     if 'user_id' in session:
         # Logged-in user: update quantity in the database
@@ -447,7 +449,7 @@ def update_quantity():
         if action == 'increment':
             cart_item.quantity += 1
         elif action == 'decrement':
-            cart_item.quantity = max(1, cart_item.quantity - 1)  # Ensure quantity is at least 1
+            cart_item.quantity = max(1, cart_item.quantity - 1)  
 
         db.session.commit()
 
@@ -465,8 +467,8 @@ def update_quantity():
                 if action == 'increment':
                     item['quantity'] += 1
                 elif action == 'decrement':
-                    item['quantity'] = max(1, item['quantity'] - 1)  # Ensure quantity is at least 1
-                    item['subtotal'] = item['price'] * item['quantity']  # Update subtotal
+                    item['quantity'] = max(1, item['quantity'] - 1)  
+                    item['subtotal'] = item['price'] * item['quantity']  
                 # Update the subtotal
                 item['subtotal'] = item['price'] * item['quantity']
                 break
@@ -481,8 +483,10 @@ def update_quantity():
 
         return json.dumps({'status': 'OK', 'new_quantity': item['quantity'], 'new_subtotal': item['subtotal'], 'new_total': total_price})
 
-
-
+#Custic, P. 2024. Yet another password reset tutorial in flask. 
+#Freelance Footprints. [Online]. [Accessed 12 December 2024]. 
+#Available from: https://freelancefootprints.substack.com/p/yet-another-password-reset-tutorial.
+# Route for forget password
 @app.route('/forgot-password', methods=['GET', 'POST'])
 def forgot_password():
     if request.method == 'POST':
@@ -493,9 +497,8 @@ def forgot_password():
             token = user.generate_reset_password_token(
                 secret_key=app.config['SECRET_KEY']
             )
-            # Create the password reset URL
             reset_url = url_for('reset_password', token=token, user_id=user.id, _external=True)
-            # Send the reset email directly in this view
+           
             subject = 'Password Reset Request'
             msg = Message(
                 subject,
@@ -513,8 +516,10 @@ If you did not make this request, please ignore this email. This link expires in
 
     return render_template('forgot_password.html')
 
-
-
+#Custic, P. 2024. Yet another password reset tutorial in flask. 
+#Freelance Footprints. [Online]. [Accessed 12 December 2024]. 
+#Available from: https://freelancefootprints.substack.com/p/yet-another-password-reset-tutorial.
+# Route for reset password 
 @app.route('/reset-password/<token>/<int:user_id>', methods=['GET', 'POST'])
 def reset_password(token, user_id):
     user = User.validate_reset_password_token(
@@ -533,7 +538,7 @@ def reset_password(token, user_id):
             return redirect(url_for('index'))
     return render_template('reset_password.html')
 
-
+# Route for payment page
 @app.route('/payment', methods=['GET', 'POST'])
 def payment():
     # Check if user is logged in
@@ -555,17 +560,17 @@ def payment():
 
         # Process each cart item and calculate total price
         for item in cart_items:
-            if user_id:  # Logged-in user
+            if user_id:  
                 saree = Saree.query.get(item.saree_id)
                 quantity = item.quantity
-            else:  # Guest user
+            else:  
                 saree = Saree.query.get(item['id'])
                 quantity = item['quantity']
 
             # Check stock availability
             if saree.stock >= quantity:
-                saree.stock -= quantity  # Reduce stock
-                total_price += saree.price * quantity  # Calculate total price
+                saree.stock -= quantity  
+                total_price += saree.price * quantity  
             else:
                 flash(f"Not enough stock for {saree.name}. Available: {saree.stock}.", "danger")
                 return redirect(url_for('view_cart'))
@@ -577,7 +582,7 @@ def payment():
             total_price=total_price
         )
         db.session.add(new_order)
-        db.session.commit()  # Save the order to get its ID
+        db.session.commit()  
         print(f"Order created: {new_order.id}")
 
         # Add order items
@@ -598,13 +603,13 @@ def payment():
             db.session.add(order_item)
 
         # Clear the cart after checkout
-        if user_id:  # Logged-in user
+        if user_id:  
             CartItem.query.filter_by(user_id=user_id).delete()
-        else:  # Guest user
-            session.pop('cart', None)  # Clear guest cart
-            session.pop('guest_info', None)  # Clear guest info
+        else:  
+            session.pop('cart', None)  
+            session.pop('guest_info', None)  
 
-        db.session.commit()  # Commit all changes to the database
+        db.session.commit()  
         flash("Payment successful! Thank you for your purchase.", "success")
         return redirect(url_for('index'))
 
@@ -614,7 +619,7 @@ def payment():
         guest_info=session.get('guest_info'),
     )
 
-
+# Route for saree detail page
 @app.route('/saree/<int:saree_id>', methods=['GET', 'POST'])
 def saree_detail(saree_id):
     saree = Saree.query.get_or_404(saree_id)
@@ -661,16 +666,15 @@ def saree_detail(saree_id):
     return render_template('saree_detail.html', saree=saree, breadcrumbs=breadcrumbs)
 
 
-
+# Route to add to wishlist
 @app.route('/add-to-wishlist/<int:saree_id>', methods=['POST'])
 def add_to_wishlist(saree_id):
     """Add a saree to the wishlist."""
-    # Check if the user is logged in
     if 'user_id' not in session:
         flash("Please log in to add items to your wishlist.", "warning")
-        return redirect(url_for('index'))  # Redirect to login page or index
+        return redirect(url_for('index'))  
 
-    saree = Saree.query.get_or_404(saree_id)  # Fetch the saree from the database
+    saree = Saree.query.get_or_404(saree_id)  
     user_id = session['user_id']
 
     # Check if the saree is already in the user's wishlist
@@ -679,7 +683,6 @@ def add_to_wishlist(saree_id):
         flash(f"{saree.name} is already in your wishlist!", "info")
         return redirect(url_for('wishlist'))
 
-    # Add the saree to the wishlist
     new_wishlist_item = WishlistItem(user_id=user_id, saree_id=saree_id)
     db.session.add(new_wishlist_item)
     db.session.commit()
@@ -687,7 +690,7 @@ def add_to_wishlist(saree_id):
     flash(f"{saree.name} added to wishlist!", "success")
     return redirect(url_for('wishlist'))
 
-
+# Route for the wishlist page
 @app.route('/wishlist')
 def wishlist():
     """Show all items in the wishlist."""
@@ -710,6 +713,7 @@ def wishlist():
 
     return render_template('wishlist.html', wishlist=wishlist)
 
+# Route to remove from wishlist
 @app.route('/remove-from-wishlist/<int:saree_id>', methods=['POST'])
 def remove_from_wishlist(saree_id):
     """Remove an item from the wishlist."""
@@ -727,29 +731,24 @@ def remove_from_wishlist(saree_id):
     flash("Item removed from wishlist.", "info")
     return redirect(url_for('wishlist'))
 
-
+# Route to the privacy policy page
 @app.route('/privacy-policy')
 def privacy_policy():
     return render_template('privacy_policy.html')
 
-
+# Route for the profile page
 @app.route('/profile')
 def profile():
-    # Ensure the user is logged in
     if 'user_id' not in session:
         flash("Please log in to access your profile.", "warning")
         return redirect(url_for('login'))
 
-    # Fetch user details
     user = User.query.get(session['user_id'])
 
-    # Fetch user's orders
     orders = Order.query.filter_by(user_id=user.id).order_by(Order.date_created.desc()).all()
 
-    # Fetch user's wishlist items (if implemented)
     wishlist_items = WishlistItem.query.filter_by(user_id=user.id).all()
 
-    # Render the profile page with the fetched data
     return render_template(
         'profile.html',
         user=user,
@@ -757,6 +756,7 @@ def profile():
         wishlist_items=wishlist_items
     )
 
+# Route to get the order details 
 @app.route('/order/<int:order_id>')
 def order_details(order_id):
     # Fetch the order by its ID
@@ -774,11 +774,14 @@ def order_details(order_id):
 
     return render_template('order_details.html', order=order)
 
-
-
+# OpenAI (2024) ChatGPT: Artificial Intelligence Language Model. [Accessed: 06 December 2024].
+# Available from: https://openai.com/chatgpt 
+# Route to load the cart
+# Route for the search functionality
 @app.route('/search')
 def search():
-    query = request.args.get('q', '').strip()  # Get the search term and strip whitespace
+    # Get the search term and strip whitespace
+    query = request.args.get('q', '').strip()  
     if not query:
         flash("Please enter a search term.", "warning")
         return redirect(url_for('index'))
@@ -790,8 +793,7 @@ def search():
     
     return render_template('search_results.html', query=query, results=results)
 
-
-
+# Route for the address page
 @app.route('/address', methods=['GET', 'POST'])
 def address():
     if 'user_id' not in session:

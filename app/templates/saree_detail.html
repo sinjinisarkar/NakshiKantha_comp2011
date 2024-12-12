@@ -27,21 +27,16 @@
             <!-- Stock Status -->
             {% if saree.stock > 0 %}
                 <p class="text-success">In Stock: {{ saree.stock }}</p>
-
+                
                 <!-- Quantity Selector -->
                 <div class="form-group">
                     <label for="quantity">Quantity:</label>
                     <div class="d-flex align-items-center">
-                        <!-- Decrement Button -->
                         <button class="btn btn-outline-secondary" id="decrement-btn">-</button>
-                        <!-- Input Field for Quantity -->
                         <input type="text" id="quantity" name="quantity" value="1" min="1" max="{{ saree.stock }}" class="form-control mx-2" style="width: 80px;" readonly>
-                        <!-- Increment Button -->
                         <button class="btn btn-outline-secondary" id="increment-btn">+</button>
                     </div>
                 </div>
-
-
 
                 <!-- Add to Cart Button -->
                 <form action="{{ url_for('add_to_cart', saree_id=saree.id) }}" method="POST">
