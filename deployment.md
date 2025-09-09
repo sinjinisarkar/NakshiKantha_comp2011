@@ -29,16 +29,5 @@
    `git tag -f last-good && git push -f origin last-good`
 5) Reload the web app from the **Web** tab.
 
-## Rollback (if the new deploy breaks)
-1) **Code rollback**  
-   In app dir: `git fetch --tags && git checkout last-good`  
-   Reload the app from **Web** tab.
-2) **Data rollback (if needed)**  
-   `bash scripts/rollback_last_backup.sh`
-3) Verify key pages, then review logs (see below).
-
 ## Monitoring / Logs
 - PythonAnywhere **Error log** and **Server log** (Web tab) show WSGI/runtime errors.
-- App also writes to `app.log` (see logging setup) for error traces.
-- After each deploy, check last 50 lines:  
-  `tail -n 50 app.log`
