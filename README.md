@@ -31,4 +31,5 @@ This project is a full-stack e-commerce web application built as part of the COM
 - Enhanced UI animations and smoother transitions.  
 
 ## Demo & Documentation  
-- [Final Report PDF](./Final%20Report%20-%20COMP2011.pdf)  
+- [Final Report PDF](./Final%20Report%20-%20COMP2011.pdf)
+- See **Deployment & Rollback (PythonAnywhere)**: [deployment.md](deployment.md)
